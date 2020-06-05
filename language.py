@@ -1,6 +1,9 @@
 from lexer import Lexer
 
-text_input = "4 5"
+text_input = """
+    __int x = 5;
+    x = 1 + 2 * 3;
+    """
 
 lexer = Lexer().get_lexer()
 tokens = lexer.lex(text_input)
