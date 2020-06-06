@@ -1,0 +1,27 @@
+initialization : variabledeclaration '=' LITERAL ';' ;
+
+variabledeclaration : TYPE NAME ;
+
+assignment : NAME '=' expression ';' ;
+
+expression : LITERAL '+' expression
+	   | LITERAL '-' expression
+	   | LITERAL '*' expression
+	   | LITERAL '/' expression
+	   | LITERAL
+	   ;
+
+conditional : KEYWORD '(' condition ')' '{' assignment '}' KEYWORD '{' assignment '}' ;
+
+condition : NAME '>' LITERAL
+	  | NAME '<' LITERAL
+	  ;
+
+functioncall : FUNCTIONNAME '(' arguments ')' ';' ;
+
+arguments : /* empty */
+	  | arguments ',' argument
+	  | argument
+	  ;
+
+argument : NAME ;
