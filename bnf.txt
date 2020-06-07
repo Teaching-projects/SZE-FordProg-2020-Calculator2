@@ -1,27 +1,29 @@
-initialization : variabledeclaration '=' LITERAL ';' ;
+calculator : expression
+           | variable_initialization
+           | variable_definition
+           | variable_assignment
+           | conditional_statement
+           | empty
+     
+variable_initialization : TYPE NAME SEMICOLON
 
-variabledeclaration : TYPE NAME ;
+variable_definition : TYPE NAME EQUALS expression SEMICOLON
 
-assignment : NAME '=' expression ';' ;
+variable_assignment : NAME EQUALS expression SEMICOLON
 
-expression : LITERAL '+' expression
-	   | LITERAL '-' expression
-	   | LITERAL '*' expression
-	   | LITERAL '/' expression
-	   | LITERAL
-	   ;
+conditional_statement : KEYWORD_IF OPEN_PARENTHESES condition CLOSE_PARENTHESES OPEN_BRACES variable_assignment CLOSE_BRACES KEYWORD_ELSE OPEN_BRACES variable_assignment CLOSE_BRACES
 
-conditional : KEYWORD '(' condition ')' '{' assignment '}' KEYWORD '{' assignment '}' ;
+condition : bool_expression LESS_SIGN bool_expression
+          | bool_expression GREATER_SIGN bool_expression 
 
-condition : NAME '>' LITERAL
-	  | NAME '<' LITERAL
-	  ;
+bool_expression : INTEGER
+                | FLOAT
+                | NAME
 
-functioncall : FUNCTIONNAME '(' arguments ')' ';' ;
-
-arguments : /* empty */
-	  | arguments ',' argument
-	  | argument
-	  ;
-
-argument : NAME ;
+expression : expression MULTIPLICATION expression
+           | expression DIVISION expression
+           | expression ADDITION expression
+           | expression SUBTRACTION expression
+           | INTEGER
+           | FLOAT
+           | NAME
