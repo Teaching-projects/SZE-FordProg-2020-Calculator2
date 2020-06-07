@@ -107,12 +107,16 @@ print(x);
 ```
 >>integer x = 5;
 None
+>>x
+5
 >>x = 1 + 2 * 3;
 None
->>if ( x > 10 ) { x = 1; } else { x = 0; }
-None
 >>x
-0
+7
+>>if ( x > 10 ) { x = 1; } else { x = 0; }
+None                                                <-- new value has been assigned to x in the conditional statement.
+>>x                                                 
+0                                                   <-- x's current value is 0, because 7 is less than 10.
 ```
 ### Reference:
   - [howCode's YoutTube channel - Making your Own Calculator in Python](https://www.youtube.com/watch?v=Hh49BXmHxX8&list=PLBOh8f9FoHHg7Ed_4yKhIbq4lIJAlonn8&index=1)
