@@ -211,25 +211,3 @@ while True:
     except EOFError:
         break
     parser.parse(s)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    
-    
