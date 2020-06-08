@@ -71,6 +71,7 @@ def t_NAME(t):
 def t_error(t):
     print("Illegal character!")
     t.lexer.skip(1)
+    return t
     
 lexer = lex.lex()
 
@@ -83,43 +84,63 @@ def p_calc(p):
     '''
     calc : expression
          | var_init
-         | var_definition
+         | var_declare
          | var_assign
          | conditional_statement
          | empty
     '''
-    print(run(p[1]))
+    
+def p_var_declare(p):
+    '''
+    var_declare : TYPE NAME SEMICOLON
+    '''
+    global env
+    
+    env[p[2]] = 0
+    print(f"Variable '{p[2]}' has been created.")
     
 def p_var_init(p):
     '''
-    var_init : TYPE NAME SEMICOLON
-    '''
-    p[0] = ('declaration', p[1], p[2], 0)
+    var_init : TYPE NAME EQUALS expression SEMICOLON
+    '''    
+    global env
     
-def p_var_definition(p):
-    '''
-    var_definition : TYPE NAME EQUALS expression SEMICOLON
-    '''
-    p[0] = ('declaration', p[1], p[2], p[4])
+    if p[1] == 'integer':
+        env[p[2]] = int(p[4])
+    else:
+        env[p[2]] = p[4]
+
+    print(f"Variable '{p[2]}' has a value as '{env[p[2]]}'")
             
 def p_var_assign(p):
     '''
     var_assign : NAME EQUALS expression SEMICOLON
     '''
-    p[0] = ('assignment', p[1], p[3])
+    global env
+    
+    if exists(p[1]):
+        env[p[1]] = p[3]
+#        print(f"Variable '{p[1]}' has a new value as '{env[p[1]]}'")
     
 def p_conditional_statement(p):
     '''
     conditional_statement : KEYWORD_IF OPEN_PARENTHESES condition CLOSE_PARENTHESES OPEN_BRACES var_assign CLOSE_BRACES KEYWORD_ELSE OPEN_BRACES var_assign CLOSE_BRACES
     '''
-    p[0] = ('conditional_statement', p[3], p[6], p[10])
+    
+    if p[3]:
+        p[6]
+    else:
+        p[10]
     
 def p_condition(p):
     '''
     condition : bool_expression LESS_SIGN bool_expression
               | bool_expression GREATER_SIGN bool_expression 
     '''
-    p[0] = (p[2], p[1], p[3])
+    
+    if exists(p[1]):
+        p[0] = eval(str(env[p[1]]) + p[2] + str(p[3]))
+        
     
 def p_bool_expression(p):
     '''
@@ -127,29 +148,44 @@ def p_bool_expression(p):
                     | FLOAT
                     | NAME
     '''
+    
     p[0] = p[1]
     
 def p_expression(p):
     '''
     expression : expression MULTIPLICATION expression
-    expression : expression DIVISION expression
-    expression : expression ADDITION expression
-    expression : expression SUBTRACTION expression
+               | expression DIVISION expression
+               | expression ADDITION expression
+               | expression SUBTRACTION expression
     '''
-    p[0] = (p[2], p[1], p[3])    
+    
+    if p[2] == '+':
+        p[0] = p[1] + p[3]
+    elif p[2] == '-':
+        p[0] = p[1] - p[3]
+    elif p[2] == '*':
+        p[0] = p[1] * p[3]
+    elif p[2] == '/':
+        p[0] = p[1] / p[3]
+        
+    print(p[0])
 
 def p_expression_integer_float(p):
     '''
     expression : INTEGER
                | FLOAT
     '''
+    
     p[0] = p[1]
     
 def p_expression_integer_var(p):
     '''
     expression : NAME
     '''
-    p[0] = ('var', p[1])
+    
+    p[0] = p[1]
+    if exists(p[1]):
+        print(env[p[1]])
     
 def p_error(p):
     print("Syntax error found!")
@@ -158,57 +194,17 @@ def p_empty(p):
     '''
     empty :
     '''
-    p[0] = None
+
+def exists(variable):
+    if variable not in env:
+        print(f"{variable} is an undeclared variable!")
+        return False
+    else:
+        return True
     
 parser = yacc.yacc()
-env = {}
 
-def run(p):
-    global env
-    if type(p) == tuple:
-        if p[0] == '+':
-            return run(p[1]) + run(p[2])
-        elif p[0] == '-':
-            return run(p[1]) - run(p[2])
-        elif p[0] == '*':
-            return run(p[1]) * run(p[2])
-        elif p[0] == '/':
-            return run(p[1]) / run(p[2])
-        elif p[0] == 'declaration':
-            if p[1] == 'integer':
-                env[p[2]] = run(int(p[3]))
-            else:
-                env[p[2]] = run(p[3])
-        elif p[0] == '=':
-            env[p[1]] = run(p[2])
-        elif p[0] == 'assignment':
-            if p[1] not in env:
-                return f"{p[1]} is an undeclared variable!"
-            else:
-                env[p[1]] = run(p[2])
-        elif p[0] == 'conditional_statement':
-            for element in p:
-                if type(element) == tuple:
-                    if element[1] not in env:
-                        return f"{element[1]} is an undeclared variable!"
-            if p[1][0] == '>':
-                if env[p[1][1]] > p[1][2]:
-                    run(p[2])
-                else:
-                    run(p[3])
-            else:
-                if env[p[1][1]] < p[1][2]:
-                    run(p[2])
-                else:
-                    run(p[3])
-        elif p[0] == 'var':
-            if p[1] not in env:
-                return "Undeclared variable found!"
-            else:
-                return env[p[1]]
-    else:
-        return p
-        
+env = {}
 while True:
     try:
         s = input('>>')
