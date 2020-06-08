@@ -1,13 +1,13 @@
 calculator : expression
            | variable_initialization
-           | variable_definition
+           | variable_declaration
            | variable_assignment
            | conditional_statement
            | empty
      
-variable_initialization : TYPE NAME SEMICOLON
+variable_declaration : TYPE NAME SEMICOLON
 
-variable_definition : TYPE NAME EQUALS expression SEMICOLON
+variable_initialization : TYPE NAME EQUALS expression SEMICOLON
 
 variable_assignment : NAME EQUALS expression SEMICOLON
 
