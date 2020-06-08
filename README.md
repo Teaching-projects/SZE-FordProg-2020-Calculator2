@@ -36,9 +36,11 @@ $python calculator.py
 >>1+2
 3
 >>1*2+3
-5
+2                     <-- result of 1 * 2
+5                     <-- result of 2 + 3
 >>1+3/2
-2.5
+1.5                   <-- result of 3 / 2
+2.5                   <-- result of 1 + 1.5
 ```
 
 ### Declaring and initializing integer and float type variables
@@ -48,24 +50,20 @@ Exact syntax has to be followed else the declaration/initialization is going to 
 a is an undeclared variable!
 >>int a = 5;
 Syntax error found!
-None
 >>integer a := 5;
 Illegal character!
-None
->>integer a = 5;            <-- accepted initialization
-None                          
->>a                         <-- printing the value of the variable 'a'
+>>integer a = 5;                    <-- accepted initialization
+Variable 'a' has a value as '5'
+>>a                                 <-- printing the value of the variable 'a'
 5
 >>integer b = 2.5;
-None
+Variable 'b' has a value as '2'
 >>b
-2                           <-- decimal value is going to be ignored, becase of the type
+2                                   <-- decimal value is going to be ignored, becase of the type
 >>float c = 9.5
-None
+Variable 'c' has a value as '2.5'
 >>c
 9.5
->>b + c
-11.5
 ```
 
 ### Assigning new value to a variable
@@ -74,18 +72,18 @@ Assume we already have a variable called 'a'.
 By entering the correct input the program is able to redefine the value of 'a' no matter what was its previous value.
 ```
 >>a = 1 + 2 * 3;
-None
+6                               <-- result of 2 * 3
+7                               <-- result of 1 + 6
 >>a
-7
+7                               <-- current value of 'a'
 ```
 
 ### Understanding conditional statements
 Please note FordProgPY currently supports only inline conditional statements.
 ```
 >>integer x = 5;
-None
+Variable 'x' has a value as '5'
 >>if(x > 10){ x = 1; } else { x = 0; }
-None
 >>x                                       
 0                                               <-- 0 is the expected output, because 5 > 10 is not true.
 ```
@@ -106,15 +104,15 @@ print(x);
 **Using the program to calculate the above example:**
 ```
 >>integer x = 5;
-None
+Variable 'x' has a value as '5'
 >>x
 5
 >>x = 1 + 2 * 3;
-None
+6
+7
 >>x
 7
 >>if ( x > 10 ) { x = 1; } else { x = 0; }
-None                                                <-- new value has been assigned to x in the conditional statement.
 >>x                                                 
 0                                                   <-- x's current value is 0, because 7 is less than 10.
 ```
