@@ -52,6 +52,7 @@ a is an undeclared variable!
 Syntax error found!
 >>integer a := 5;
 Illegal character!
+Syntax error found!
 >>integer a = 5;                    <-- accepted initialization
 Variable 'a' has a value as '5'
 >>a                                 <-- printing the value of the variable 'a'
